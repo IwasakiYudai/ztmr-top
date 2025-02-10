@@ -99,6 +99,93 @@ a {
     height: auto;
     /* 高さは自動計算でアスペクト比を維持 */
 }
+
+
+.byoushin {
+    display: block;
+    /* 行全体を使うブロック要素化 */
+    margin: 20px auto;
+    /* 上下に20px余白、左右はautoで中央寄せ */
+    max-width: 600px;
+    /* 画像の最大幅を600pxに制限 */
+    height: auto;
+    /* 高さは自動計算でアスペクト比を維持 */
+}
+
+.zutomaro-illustration {
+    display: block;
+    /* 行全体を使うブロック要素化 */
+    margin: 20px auto;
+    /* 上下に20px余白、左右はautoで中央寄せ */
+    max-width: 600px;
+    /* 画像の最大幅を600pxに制限 */
+    height: auto;
+    /* 高さは自動計算でアスペクト比を維持 */
+}
+
+.fanart-demo1 {
+    display: block;
+    /* 行全体を使うブロック要素化 */
+    margin: 20px auto;
+    /* 上下に20px余白、左右はautoで中央寄せ */
+    max-width: 600px;
+    /* 画像の最大幅を600pxに制限 */
+    height: auto;
+    /* 高さは自動計算でアスペクト比を維持 */
+}
+
+
+/* 黒の半透明ボックス */
+.black-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 20px;
+    /* 内側余白 */
+    margin: 0 auto;
+    /* 中央寄せ(横幅指定時) */
+    max-width: 800px;
+    /* 横幅を制限(任意) */
+
+    /* 必要に応じて高さを指定 or 自動でOK */
+    height: 800px; 
+    text-align: center;
+}
+
+/* リンクの装飾例 */
+.black-overlay a {
+    color: #ffff80;
+    /* 薄い黄色など */
+    text-decoration: none;
+}
+
+.black-overlay a:hover {
+    text-decoration: underline;
+}
+
+.clickable-box-zutomayo-official {
+    display: inline-block;
+    /* ボックス化 */
+    padding: 10px 20px;
+    /* 内側余白 */
+    color: #fff;
+    /* 文字色を白などに */
+    text-decoration: none;
+    /* 下線を消す */
+    border: 2px dotted #fff;
+    /* 点線の枠 */
+    border-radius: 20px;
+    /* 角を丸く */
+    background-color: rgba(0, 0, 0, 0.3);
+    /* 半透明背景(任意) */
+    /* 好みでフォントサイズやフォントファミリも指定 */
+    text-align: center;
+}
+
+.clickable-box-zutomayo-official:hover {
+    /* ホバー時の演出。色や下線を変えてもOK */
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: #fff;
+}
 /* メイン */
 main {
     padding: 20px;
