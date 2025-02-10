@@ -1,0 +1,55 @@
+/* ページ全体の基本スタイル */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+.center-image {
+    display: block;
+    /* 行全体を使うブロック要素化 */
+    margin: 20px auto;
+    /* 上下に20px余白、左右はautoで中央寄せ */
+    max-width: 600px;
+    /* 画像の最大幅を600pxに制限 */
+    height: auto;
+    /* 高さは自動計算でアスペクト比を維持 */
+}
+
+.info-box {
+    border: 2px dashed #fff;
+    /* 枠線(点線) */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* 半透明背景 */
+    color: #fff;
+    /* 文字色 */
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
+
+    /* ▼ フォント指定 ▼ */
+    font-size: 1.2rem;
+    font-family:
+        "Hiragino Sans",
+        /* macOS標準のゴシック */
+        "Hiragino Kaku Gothic ProN",
+        "Meiryo",
+        /* Windows標準ゴシック */
+        "Noto Sans JP",
+        /* Googleフォントの日本語ゴシック */
+        sans-serif;
+    /* どれもなければ汎用のsans-serif */
+}
+
+/* メイン */
+main {
+    padding: 20px;
+}
+
+/* ボタン */
+#helloBtn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    cursor: pointer;
+}
