@@ -147,7 +147,8 @@ a {
     /* 横幅を制限(任意) */
 
     /* 必要に応じて高さを指定 or 自動でOK */
-    height: 800px; 
+    /*height: 800px;*/
+    height: auto;
     text-align: center;
 }
 
@@ -225,7 +226,7 @@ a {
 
 #video-container {
     margin: 0 auto;
-        max-width: 800px;
+        max-width: 560px;
         /* または width: 560px; */
         padding-bottom: 56.25%;
         height: 0;
