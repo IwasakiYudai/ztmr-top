@@ -1,10 +1,10 @@
-// ページが読み込まれたら実行される
-window.addEventListener("DOMContentLoaded", () => {
-    // ボタンを取得
-    const helloBtn = document.getElementById("helloBtn");
+const videoIDs = [
+    "IeyCdm9WwXM?si=Eu8WgUM4Xx7x4pYo",
+    "6OC92oxs4gA?si=HHb2x4yg3LUKev7O"
+];
 
-    // ボタンがクリックされたときの処理
-    helloBtn.addEventListener("click", () => {
-        alert("Hello! はじめてのサイトへようこそ!");
-    });
-});
+const randomIndex = Math.floor(Math.random() * videoIDs.length);
+const chosenID = videoIDs[randomIndex];
+
+const iframe = document.getElementById("youtube-iframe");
+iframe.src = "https://www.youtube.com/embed/" + chosenID;
