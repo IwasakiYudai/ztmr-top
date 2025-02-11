@@ -223,7 +223,7 @@ a {
     color: #fff;
 }
 
-.video-container {
+#video-container {
     margin: 0 auto;
         max-width: 1000px;
         /* または width: 560px; */
@@ -233,7 +233,7 @@ a {
         position: relative;
 }
 
-.video-container iframe {
+#video-container iframe {
     position: absolute;
     top: 0;
     left: 0;
