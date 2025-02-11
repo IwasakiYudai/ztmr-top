@@ -225,7 +225,7 @@ a {
 
 #video-container {
     margin: 0 auto;
-        max-width: 560px;
+        max-width: 800px;
         /* または width: 560px; */
         padding-bottom: 56.25%;
         height: 0;
