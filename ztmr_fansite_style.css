@@ -186,6 +186,33 @@ a {
     background-color: rgba(0, 0, 0, 0.5);
     border-color: #fff;
 }
+
+.icon-list {
+    display: flex;
+    /* 横並びにする */
+    justify-content: center;
+    /* 中央寄せ */
+    align-items: center;
+    /* 縦の位置を中央に揃え */
+    gap: 20px;
+    /* アイコン同士の隙間 */
+    margin: 20px 0;
+    /* 全体の上下余白 */
+}
+
+.icon-list a {
+    text-decoration: none;
+    /* リンク下線を消す */
+}
+
+.icon {
+    width: 40px;
+    /* アイコンの大きさを指定 */
+    height: auto;
+    /* アスペクト比維持 */
+    display: block;
+    /* 画像をブロック要素化（上下の隙間対策） */
+}
 /* メイン */
 main {
     padding: 20px;
