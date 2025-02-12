@@ -239,6 +239,47 @@ a {
     left: 0;
     width: 100%;
     height: 100%;
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+
+/* 親コンテナ: Flexで横並びし、パーセントで幅を割り当て */
+#music-player-container {
+    display: flex;
+    /* 横並び */
+    flex-wrap: wrap;
+    /* 画面が狭い時に折り返し */
+    gap: 2%;
+    /* 各ボックス間の隙間:2% */
+    width: 60%;
+    /* 画面全体の90%幅にする, お好みで */
+    margin: 120px auto;
+    /* 中央寄せ */
+    /* heightはautoにしておき、子要素に依存させる */
+}
+
+/* 各プレーヤーを入れるボックス - 横幅をパーセント */
+.player-box {
+    position: relative;
+    width: 48%;
+    /* 例: 2つ並べるなら約48%に */
+    padding-bottom: 56.25%;
+    /* 16:9 → 9/16=0.5625=56.25% */
+    height: 0;
+    /* パディングボトム方式 */
+    overflow: hidden;
+    /* 上記で「横幅×56.25%」の高さが擬似的に確保される */
+}
+
+/* iframeを絶対配置し、親ボックスにピッタリ広げる */
+.player-box iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* 親に対して100% → ピクセルなし */
+    height: 100%;
+    /* 同上 */
+    border: none;
+    /* 好みで枠を消す */
 }
 /* メイン */
 main {
