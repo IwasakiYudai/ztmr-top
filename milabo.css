@@ -1,0 +1,259 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #556B2F;
+}
+
+.pixel-text {
+    font-family: 'VT323', monospace;
+    font-size: 6rem;
+    /* 好みでサイズ調整 */
+    line-height: 1.2;
+    text-align: center;
+    color: #fff;
+}
+
+.objective {
+    color: #fff;
+    background: none;
+    /* 背景は透明(不要なら削除) */
+    font-size: 0.875rem;
+    /* 約14px (16px × 0.875) */
+    line-height: 1.4;
+    /* 行間は少し抑え気味 */
+    max-width: 600px;
+    margin: 1em auto;
+    text-align: center;
+    /* 他の余白やpaddingなど必要なら追加 */
+}
+
+.objective h3 {
+    margin-bottom: 0.4em;
+    font-size: 1rem;
+    /* 小さくするなら1rem=16px程度 */
+}
+
+.button-notice{
+    text-align: center;
+        color: #fff;
+}
+
+
+.notice2 {
+    color: #fff;
+    background: none;
+    /* 背景は透明(不要なら削除) */
+    font-size: 0.875rem;
+    /* 約14px (16px × 0.875) */
+    line-height: 1.4;
+    /* 行間は少し抑え気味 */
+    max-width: 600px;
+    margin: 1em auto;
+    text-align: center;
+    /* 他の余白やpaddingなど必要なら追加 */
+}
+
+.notice2 h3 {
+    margin-bottom: 0.4em;
+    font-size: 1rem;
+    /* 小さくするなら1rem=16px程度 */
+}
+
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 横中央寄せ */
+    justify-content: center;
+    /* 縦方向の中央寄せをしたいならさらに工夫 */
+    padding-top: 50px;
+    gap: 10px;
+    /* ボタン間の隙間 */
+}
+
+/* 基本ボタンのスタイル */
+.menu-button {
+    display: block;
+    width: 220px;
+    /* ボタンの幅 */
+    padding: 15px;
+    font-size: 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    /* 個別クラスで上書き予定 */
+    color: #fff;
+    /* 文字色を白に */
+    margin: 5px 0;
+    /* 文字を大きくしたい場合は font-sizeを調整 */
+}
+
+/* 1: 黒＋金枠ボタン */
+.black-gold {
+    background-color: #000;
+    /* 黒 */
+    border: 2px solid #FFD700;
+    /* 金色(#FFD700) */
+}
+
+/* 2: 明るい青＋点線枠ボタン */
+.streaming-dl {
+    background-color: #00AEEF;
+    /* 明るい青 */
+    border: 2px dotted red;
+    /* 赤の点線 */
+    font-weight: bold;
+}
+
+/* 3: Twitter風青ボタン */
+.twitter-share {
+    background-color: #1DA1F2;
+    /* Twitterっぽい青 */
+    border: none;
+}
+
+/* アイコンとテキストの隙間 */
+.twitter-share .icon {
+    margin-right: 8px;
+}
+
+.music-video {
+    font-family: 'VT323', monospace;
+    font-size: 3rem;
+    /* 好みでサイズ調整 */
+    line-height: 1.2;
+    text-align: center;
+    color: #fff;
+}
+
+#video-container {
+    position: relative;
+    width: 60%;
+    padding-bottom: 33.75%;
+    margin: 0 auto;
+    height: 0;
+    overflow: hidden;
+}
+
+#video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+.cookie-privacy {
+    /* 半透明白 */
+    text-align: center;
+        color: #fff;
+    text-align: center;
+    /* 上部に少し余白を取りたいなら margin-top: 20px; */
+}
+
+/* 見出し */
+.cookie-privacy h3 {
+    margin-bottom: 0.5em;
+}
+
+/* テキスト */
+.cookie-privacy p {
+    line-height: 1.4;
+    margin-bottom: 0;
+}
+
+/* リンク */
+.cookie-privacy a {
+    color: #ffff80;
+    /* 薄い黄色など */
+    text-decoration: underline;
+}
+
+.cookie-privacy a:hover {
+    text-decoration: none;
+}
+
+
+.black-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 20px;
+    /* 内側余白 */
+    margin: 0 auto;
+    /* 中央寄せ(横幅指定時) */
+    max-width: 800px;
+    /* 横幅を制限(任意) */
+
+    /* 必要に応じて高さを指定 or 自動でOK */
+    /*height: 800px;*/
+    height: auto;
+    text-align: center;
+}
+
+/* リンクの装飾例 */
+.black-overlay a {
+    color: #ffff80;
+    /* 薄い黄色など */
+    text-decoration: none;
+}
+
+.black-overlay a:hover {
+    text-decoration: underline;
+}
+
+.clickable-box-zutomayo-official {
+    display: inline-block;
+    /* ボックス化 */
+    padding: 10px 20px;
+    /* 内側余白 */
+    color: #fff;
+    /* 文字色を白などに */
+    text-decoration: none;
+    /* 下線を消す */
+    border: 2px dotted #fff;
+    /* 点線の枠 */
+    border-radius: 20px;
+    /* 角を丸く */
+    background-color: rgba(0, 0, 0, 0.3);
+    /* 半透明背景(任意) */
+    /* 好みでフォントサイズやフォントファミリも指定 */
+    text-align: center;
+}
+
+.clickable-box-zutomayo-official:hover {
+    /* ホバー時の演出。色や下線を変えてもOK */
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: #fff;
+}
+
+.icon-list {
+    display: flex;
+    /* 横並びにする */
+    justify-content: center;
+    /* 中央寄せ */
+    align-items: center;
+    /* 縦の位置を中央に揃え */
+    gap: 20px;
+    /* アイコン同士の隙間 */
+    margin: 20px 0;
+    /* 全体の上下余白 */
+}
+
+.icon-list a {
+    text-decoration: none;
+    /* リンク下線を消す */
+}
+
+.icon {
+    width: 40px;
+    /* アイコンの大きさを指定 */
+    height: auto;
+    /* アスペクト比維持 */
+    display: block;
+    /* 画像をブロック要素化（上下の隙間対策） */
+}

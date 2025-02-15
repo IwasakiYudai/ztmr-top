@@ -1,0 +1,72 @@
+/* ベースのリセットや共通設定 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ページ全体の基本設定 */
+body {
+    font-family: sans-serif;
+    background-color: #556B2F;
+    /* 背景色をこれまでに合わせる */
+    color: #fff;
+    /* 文字色を白 */
+    line-height: 1.6;
+    /* お好みで余白などを加えてもOK */
+}
+
+/* 全体コンテナ（任意） */
+.container {
+    max-width: 700px;
+    /* 文章領域を狭めたい場合 */
+    margin: 40px auto;
+    /* 上下40px, 左右autoで中央寄せ */
+    padding: 20px;
+    /* 内側余白 */
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+/* 見出し */
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+/* 段落などのテキスト */
+p {
+    margin-bottom: 1em;
+    line-height: 1.6;
+    white-space: pre-line;
+    /* 改行を反映させたい場合は pre-line を使う (HTMLの改行を活かす) */
+}
+
+/* リンク */
+a {
+    color: #ffff80;
+    /* 薄い黄色 */
+    text-decoration: none;
+    border-bottom: 1px dashed #ffff80;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ボタンや別ページへの導線などまとめて調整する場合
+   例: .button として定義 */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-top: 1em;
+}
+
+.button:hover {
+    background-color: #333;
+}
