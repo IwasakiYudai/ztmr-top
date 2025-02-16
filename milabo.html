@@ -7,8 +7,6 @@
     <meta name="description" content="ずっと真夜中でいいのに。ファンによる非公式ゲームセンターサイト。公式サイトのパロディや楽曲のランダム再生、ファンアートなど多数掲載。">
     <link rel="stylesheet" href="milabo.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
-    <script src="https://unpkg.com/kaboom@3000.0.1/dist/kaboom.js"></script>
-    <script defer src="milabo_game.js"></script>
 </head>
 
 <body>
@@ -40,7 +38,13 @@
         </div>
 
 
+        <canvas id="gameCanvas" width="640" height="480" style="background:#000"></canvas>
 
+        <script src="scripts/engine.js"></script>
+        <script src="scripts/map.js"></script>
+        <script src="scripts/player.js"></script>
+        <script src="scripts/enemy.js"></script>
+        <script src="scripts/main.js"></script>
 
 
 
