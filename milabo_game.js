@@ -1,28 +1,34 @@
-// game.js (外部ファイルなどで管理)
-//--------------------------------------
-// Kaboom初期化
+// ----------------------------------------
+// 1) 定数＆Kaboom初期化
+
+const TILE_SIZE = 32;   // タイル幅・高さ
+const ENEMY_SPEED = 10; // 敵の追尾速度
+
 kaboom({
-  global: true,
+  global: true,         // kaboom関数をグローバルに
   width: 640,
   height: 480,
-  // 画面に合わせて設定
-  debug: true,
-  clearColor: [0, 0, 0, 1], // 背景を黒
+  debug: true,          // デバッグ表示ON
+  clearColor: [0, 0, 0, 1],
 });
 
-// 画像読み込み
-loadSprite("scrollBig", "scrollBig.png");      // プレイヤー
-loadSprite("scrollSmall", "scrollSmall.png");  // ペレット
-loadSprite("enemy", "enemy.png");             // 敵
-loadSprite("wall", "wall.png");               // 壁など
+// ----------------------------------------
+// 2) 画像（存在しなくてもOK） → 無いと警告は出るが "=" 読み取りエラーには関係なし
 
-// シーン: 例「stage1」
-scene("stage1", () => {
+loadSprite("scrollBig", "scrollBig.png");     // プレイヤー (大きい巻物)
+loadSprite("scrollSmall", "scrollSmall.png"); // ペレット (小巻物)
+loadSprite("enemy", "enemy.png");            // 敵
+loadSprite("wall", "wall.png");              // 壁
 
-  let score = 0;   // スコア（ペレット取得数）
+// ----------------------------------------
+// 3) "game" シーン (パックマン風)
 
-  // レベルマップ (タイルベース)
-  // 例: "=" が壁, "." がペレット, "P" がプレイヤー, "E" が敵
+scene("game", () => {
+
+  // スコアを管理する変数
+  let score = 0;
+
+  // タイルマップ: "=" ".", "P", "E"
   const levelMap = [
     "================",
     "=......E.......",
@@ -30,28 +36,32 @@ scene("stage1", () => {
     "=P..........E..",
     "================",
   ];
-  
+
   // タイル設定
   const levelConf = {
-    width: 32,      // タイル1個の幅
-    height: 32,     // タイル1個の高さ
-    // 実際の画像や当たり判定を付けるコンポーネント
+    // 重要: v3000系は tileWidth/tileHeight
+    tileWidth: TILE_SIZE,
+    tileHeight: TILE_SIZE,
+    // 文字 "=" → 壁
     "=": () => [
       sprite("wall"),
       area(),
       solid(),
       "wall",
     ],
+    // 文字 "." → ペレット
     ".": () => [
       sprite("scrollSmall"),
       area(),
-      "pellet",   // ペレットタグ
+      "pellet",
     ],
+    // 文字 "P" → プレイヤー
     "P": () => [
       sprite("scrollBig"),
       area(),
       "player",
     ],
+    // 文字 "E" → 敵
     "E": () => [
       sprite("enemy"),
       area(),
@@ -59,68 +69,67 @@ scene("stage1", () => {
     ],
   };
 
-  // レベル配置
-  const gameLevel = addLevel(levelMap, levelConf);
+  // 実際にタイルマップを生成
+  addLevel(levelMap, levelConf);
 
-  // プレイヤー取得（タイル上で "P" として生成されたオブジェクト）
+  // プレイヤー取得
   const player = get("player")[0];
 
-  // 敵オブジェクトたち (複数いる可能性)
-  const enemies = get("enemy");
+  // 矢印キーで移動
+  onKeyDown("left",  () => player.move(-100, 0));
+  onKeyDown("right", () => player.move(100, 0));
+  onKeyDown("up",    () => player.move(0, -100));
+  onKeyDown("down",  () => player.move(0, 100));
 
-  // プレイヤー移動
-  onKeyDown("left", () => {
-    player.move(-100, 0);
-  });
-  onKeyDown("right", () => {
-    player.move(100, 0);
-  });
-  onKeyDown("up", () => {
-    player.move(0, -100);
-  });
-  onKeyDown("down", () => {
-    player.move(0, 100);
+  // 敵のAI (プレイヤー追尾)
+  onUpdate("enemy", (enemy) => {
+    const dir = player.pos.sub(enemy.pos).unit();
+    enemy.move(dir.scale(ENEMY_SPEED));
   });
 
-  // ペレット取得の衝突判定
+  // ペレット衝突
   onCollide("player", "pellet", (p, pellet) => {
     destroy(pellet);
     score++;
-    // 全部取ったらステージクリア
+    // ペレットが0になったらクリア扱い
     if (get("pellet").length === 0) {
-      go("stage2", score);
+      go("lose", score);
     }
   });
 
-  // 敵との衝突 → ゲームオーバー
+  // 敵衝突 → lose
   onCollide("player", "enemy", () => {
-    // 例: リトライシーンに飛ばす or ライフ減らす
-    go("gameOver", { score: score });
+    go("lose", score);
   });
 
-  // 敵のAI (例: プレイヤーを追う or ただのランダム移動)
-  onUpdate("enemy", (e) => {
-    // 簡単にプレイヤー座標を取得して追尾 (速度10)
-    const dir = player.pos.sub(e.pos).unit(); // 単位ベクトル
-    e.move(dir.scale(10));
+  // スコア表示（左上）
+  const scoreLabel = add([
+    text(score),
+    pos(24, 24),
+  ]);
+  onUpdate(() => {
+    scoreLabel.text = score;
   });
+
 });
 
-// 次ステージ例
-scene("stage2", (oldScore) => {
-  // oldScore は stage1から引き継いだスコア
-  // 同じようにマップ定義
-  // ...
-});
+// ----------------------------------------
+// 4) "lose" シーン
 
-// ゲームオーバーシーン
-scene("gameOver", ({score}) => {
+scene("lose", (score) => {
   add([
-    text(`Game Over! Score: ${score}`, 16),
+    text(`Game Over! Score: ${score}`),
     pos(100, 100),
   ]);
-  onKeyPress(() => go("stage1"));  // any key to restart
+  add([
+    text("Press SPACE or click to retry"),
+    pos(100, 140),
+  ]);
+
+  onKeyPress("space", () => go("game"));
+  onClick(() => go("game"));
 });
 
-// 最初はstage1から
-go("stage1");
+// ----------------------------------------
+// 5) ゲーム開始
+go("game");
