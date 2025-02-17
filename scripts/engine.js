@@ -1,18 +1,32 @@
 // engine.js
-// ここではメインループ、画像読み込み、オブジェクト管理をまとめる
 
 class Engine {
   constructor(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
-    this.objects = [];      // ゲームオブジェクト (player, enemy, pellet など)
-    this.keys = {};         // キー入力の状態
-    this.images = {};       // 読み込んだ画像を保持
-    this.lastTime = 0;      // 前フレームの時刻
+    this.objects = [];
+    this.keys = {};
+    this.images = {};
+    this.lastTime = 0;
     this.running = false;
+
+    // ▼ 追加 ▼
+    this.score = 0;             // 現在の得点
+    this._survivalAcc = 0;      // 生存時間を計測し、5秒ごと+1点
+
+    // ゲームオーバー時に呼び出すコールバック (main.jsで設定予定)
+    this.onGameOverCallback = null;
 
     // キーボードイベント
     window.addEventListener("keydown", (e) => {
+      // 矢印キーなどのスクロールを防止
+      const preventList = [
+        "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
+        "KeyW", "KeyA", "KeyS", "KeyD",
+      ];
+      if (preventList.includes(e.code)) {
+        e.preventDefault();
+      }
       this.keys[e.code] = true;
     });
     window.addEventListener("keyup", (e) => {
@@ -20,7 +34,6 @@ class Engine {
     });
   }
 
-  // 画像をプリロードするメソッド
   loadImage(name, src) {
     return new Promise((resolve) => {
       const img = new Image();
@@ -32,7 +45,6 @@ class Engine {
     });
   }
 
-  // 全画像をまとめて読み込む
   async loadAssets() {
     const promises = [];
     promises.push(this.loadImage("wall",   "img/wall.png"));
@@ -56,10 +68,19 @@ class Engine {
     this.running = false;
   }
 
+  // ▼ ゲームオーバーを発動するメソッド ▼
+  gameOver() {
+    this.stop();  // ループ停止
+    if (this.onGameOverCallback) {
+      // コールバックが登録されていれば呼ぶ (得点表示など)
+      this.onGameOverCallback(this.score);
+    }
+  }
+
   loop(currentTime) {
     if (!this.running) return;
 
-    const dt = (currentTime - this.lastTime) / 1000; // 秒
+    const dt = (currentTime - this.lastTime) / 1000;
     this.lastTime = currentTime;
 
     this.update(dt);
@@ -69,6 +90,13 @@ class Engine {
   }
 
   update(dt) {
+    // 5秒ごとに +1点
+    this._survivalAcc += dt;
+    while (this._survivalAcc >= 5) {
+      this.score += 1;
+      this._survivalAcc -= 5;
+    }
+
     // 全オブジェクト更新
     for (const obj of this.objects) {
       if (obj.update) {
@@ -78,7 +106,6 @@ class Engine {
   }
 
   draw() {
-    // 画面クリア
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     // 全オブジェクト描画
@@ -87,5 +114,10 @@ class Engine {
         obj.draw(this.ctx, this);
       }
     }
+
+    // ▼ スコアを左上に表示 ▼
+    this.ctx.fillStyle = "#fff";
+    this.ctx.font = "20px sans-serif";
+    this.ctx.fillText("Score: " + this.score, 10, 30);
   }
 }

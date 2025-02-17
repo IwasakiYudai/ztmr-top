@@ -61,6 +61,43 @@ body {
     /* 小さくするなら1rem=16px程度 */
 }
 
+#gameContainer {
+    position: relative;
+    /* 中の要素をabsoluteで配置可能にする */
+    width: 640px;
+    /* canvas幅と合わせる */
+    height: 480px;
+    /* canvas高さと合わせる */
+    margin: 20px auto;
+    /* 中央寄せなどお好みで */
+    /* 背景をつけたいなら #gameContainer { background: #ccc; } 等 */
+}
+
+.overlay-canvas {
+    position: absolute;
+    /* 親( #gameContainer )基準 */
+    top: 0;
+    left: 0;
+    width: 640px;
+    /* canvasと同じ幅 */
+    height: 480px;
+    /* canvasと同じ高さ */
+    background: rgba(0, 0, 0, 0.5);
+    /* 半透明の黒 */
+    z-index: 999;
+    /* canvasより前面に表示 */
+    display: flex;
+    /* 中身をフレックスレイアウト */
+    justify-content: center;
+    /* 水平中央 */
+    align-items: center;
+    /* 垂直中央 */
+}
+
+#gameOverPanel {
+    text-align: center;
+}
+
 
 
 #gameCanvas {

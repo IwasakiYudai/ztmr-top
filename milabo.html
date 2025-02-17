@@ -37,8 +37,28 @@
             </p>
         </div>
 
+        <div id="gameContainer">
+            <canvas id="gameCanvas" width="640" height="480"></canvas>
+        
+            <!-- canvas と同サイズのオーバーレイ -->
+            <div id="startOverlay" class="overlay-canvas">
+                <button id="startGameBtn" class="menu-button black-gold">
+                    ゲームを始める
+                </button>
+            </div>
 
-        <canvas id="gameCanvas" width="640" height="480" style="background:#000"></canvas>
+            <div id="gameOverOverlay" class="overlay-canvas" style="display:none;">
+                <div id="gameOverPanel">
+                    <h2 id="gameOverMessage" style="color:#fff; margin-bottom: 1em;">
+                        ゲームオーバー！ Score: 0
+                    </h2>
+                    <!-- 再スタートボタンなど置いてもよい -->
+                    <button id="restartBtn" class="menu-button black-gold">
+                        リスタート
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <script src="scripts/engine.js"></script>
         <script src="scripts/map.js"></script>

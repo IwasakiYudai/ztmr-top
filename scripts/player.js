@@ -9,52 +9,46 @@ class Player {
     this.speed = 100;
     this.vx = 0;
     this.vy = 0;
-    this.score = 0;
+    // this.score はもう使わず, Engine側にscoreを置く
   }
 
   update(dt, engine) {
-    // キー入力
     this.vx = 0;
     this.vy = 0;
-    if (engine.keys["ArrowLeft"])  this.vx = -this.speed;
-    if (engine.keys["ArrowRight"]) this.vx =  this.speed;
-    if (engine.keys["ArrowUp"])    this.vy = -this.speed;
-    if (engine.keys["ArrowDown"])  this.vy =  this.speed;
+    if (engine.keys["ArrowLeft"]  || engine.keys["KeyA"]) this.vx = -this.speed;
+    if (engine.keys["ArrowRight"] || engine.keys["KeyD"]) this.vx =  this.speed;
+    if (engine.keys["ArrowUp"]    || engine.keys["KeyW"]) this.vy = -this.speed;
+    if (engine.keys["ArrowDown"]  || engine.keys["KeyS"]) this.vy =  this.speed;
 
-    // 移動
     const oldX = this.x;
     const oldY = this.y;
     this.x += this.vx * dt;
     this.y += this.vy * dt;
 
-    // 簡易壁衝突( map is global or pass from engine?)
-    // 例: if engine.map.isWall(this.x, this.y) then revert
-    // ただし、メトロイドヴァニアのようなAABB衝突はもう少し複雑
-    // ここでは簡略:
+    // 壁判定
     if (engine.gameMap.isWall(this.x, this.y)) {
       this.x = oldX;
       this.y = oldY;
     }
 
-    // ペレット衝突判定
+    // オブジェクト衝突
     for (const obj of engine.objects) {
-      if (obj instanceof Pellet) {
+      // ペレット衝突 -> +10点
+      if (obj instanceof Pellet && !obj.dead) {
         const dist = Math.hypot(this.x - obj.x, this.y - obj.y);
         if (dist < 16) {
-          // 破壊
-          obj.dead = true;
+          obj.dead = true; // 破壊
           engine.objects = engine.objects.filter(o => o !== obj);
-          this.score++;
+          engine.score += 10; // ★ 10点追加
         }
       }
-    }
-    // 敵衝突
-    for (const obj of engine.objects) {
+
+      // 敵衝突 -> ゲームオーバー
       if (obj instanceof Enemy) {
         const dist = Math.hypot(this.x - obj.x, this.y - obj.y);
         if (dist < 20) {
-          // ゲームオーバー
-          // ここでは main.js 側でシーン管理
+          // ★ ゲームオーバーを発動
+          engine.gameOver();
         }
       }
     }
@@ -65,7 +59,6 @@ class Player {
     if (img) {
       ctx.drawImage(img, this.x - 16, this.y - 16, 32, 32);
     } else {
-      // 画像が無い時の代わり
       ctx.fillStyle = "lime";
       ctx.fillRect(this.x - 8, this.y - 8, 16, 16);
     }
