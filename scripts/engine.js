@@ -105,19 +105,30 @@ class Engine {
     }
   }
 
+// engine.js の draw() を変更
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // 全オブジェクト描画
+    // 全オブジェクトの描画
     for (const obj of this.objects) {
       if (obj.draw) {
         obj.draw(this.ctx, this);
       }
     }
 
-    // ▼ スコアを左上に表示 ▼
+    // スコア表示
     this.ctx.fillStyle = "#fff";
     this.ctx.font = "20px sans-serif";
-    this.ctx.fillText("Score: " + this.score, 10, 30);
+
+    // ▼ プレイヤーライフ表示
+    const player = this.objects.find(o => o instanceof Player);
+    if (player) {
+      this.ctx.fillText(`Score: ${this.score}   Life: ${player.life}`, 10, 30);
+    } else {
+  // プレイヤーが存在しない(まだ生成されてない)場合はスコアのみ
+      this.ctx.fillText(`Score: ${this.score}`, 10, 30);
+    }
   }
+
 }
