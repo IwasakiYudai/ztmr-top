@@ -58,6 +58,15 @@
                     </button>
                 </div>
             </div>
+
+            <div id="rankingOverlay" class="overlay-canvas" style="display:none;">
+                <div style="text-align: center; color: #fff;">
+                    <h2>ランキング</h2>
+                    <ul id="rankingList">
+                    </ul>
+                </div>
+                <button id="closeRankBtn" class="menu-button black-gold">閉じる</button>
+            </div>
         </div>
 
         <script src="scripts/engine.js"></script>
@@ -73,19 +82,14 @@
         </p>
 
         <div class="menu-container">
-            <!-- 1: 黒＋金枠ボタン -->
-            <button class="menu-button black-gold">遊ぶ</button>
-            <button class="menu-button black-gold">ランキング</button>
-            <button class="menu-button black-gold">遊び方</button>
+            <button id="playBtn" class="menu-button black-gold">遊ぶ</button>
+            <button id="rankBtn" class="menu-button black-gold">ランキング</button>
+            <button id="manualBtn" class="menu-button black-gold">遊び方</button>
         
-            <!-- 2: 明るい青＋点線枠ボタン -->
             <button class="menu-button streaming-dl">STREAMING/DL</button>
-        
-            <!-- 3: Twitter風青＋アイコンの文字ボタン -->
             <button class="menu-button twitter-share">
                 <span class="icon">🐦</span>ゲームをシェア
             </button>
-
         </div>
         
         <h2 class="pixel-text">music video</h2>
