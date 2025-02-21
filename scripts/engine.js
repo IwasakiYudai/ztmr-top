@@ -32,6 +32,8 @@ class Engine {
     window.addEventListener("keyup", (e) => {
       this.keys[e.code] = false;
     });
+
+    // ▼ 仮想スティック＆ボタンのモバイル操作を有効化
     this.enableMobileControls();
   }
 
@@ -130,76 +132,101 @@ class Engine {
     this.ctx.fillText(`Score: ${this.score}   Life: ${showLife}`, 10,30);
   }
 
-  
-   enableMobileControls() {
+  enableMobileControls() {
     // ----------------------------
     // 1) 仮想スティック
     // ----------------------------
     const stickArea = document.getElementById("virtualStickArea");
     if (stickArea) {
-      // スティックの中心
-      let baseX = 0;
-      let baseY = 0;
       let active = false;
+      let activeTouchId = null;
 
-      const handleTouchMove = (touch) => {
+      // 円の中心 (計算用)
+      let centerX = 0;
+      let centerY = 0;
+
+      // 指が動いたら方向ベクトルを計算
+      const handleStickMove = (clientX, clientY) => {
         const rect = stickArea.getBoundingClientRect();
-        // 要素左上を(0,0)に
-        const rx = touch.clientX - rect.left;
-        const ry = touch.clientY - rect.top;
+        // スティック円の中心
+        centerX = rect.left + rect.width / 2;
+        centerY = rect.top + rect.height / 2;
 
-        // 中心座標(半径60pxの円) → (rect.width/2, rect.height/2)
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        // ベクトル
-        const dx = rx - centerX;
-        const dy = ry - centerY;
-
-        // スティックをある程度閾値(10pxなど)を超えたら方向判定
-        const deadZone = 10;
+        const dx = clientX - centerX;
+        const dy = clientY - centerY;
         const dist = Math.hypot(dx, dy);
+
+        // ある程度の deadZone
+        const deadZone = 10;
         let vx = 0, vy = 0;
         if (dist > deadZone) {
-          // 単位ベクトル
           vx = dx / dist;
           vy = dy / dist;
         }
-
-        // ここで vx, vy の方向を矢印キーに変換
-        // ex) ある程度VX>0.3なら→,VX<-0.3なら←, VY>0.3なら↓, etc
+        // vx, vy → keys 変換
         this.keys["ArrowLeft"]  = (vx < -0.3);
         this.keys["ArrowRight"] = (vx >  0.3);
         this.keys["ArrowUp"]    = (vy < -0.3);
         this.keys["ArrowDown"]  = (vy >  0.3);
       };
 
-      // touchstart
+      // タッチ開始は stickArea 上のみ
       stickArea.addEventListener("touchstart", (e) => {
         e.preventDefault();
-        active = true;
-        // 1本目のタッチだけ扱う
-        const t = e.touches[0];
-        handleTouchMove(t);
+        const t = e.changedTouches[0];
+        if (!active) {
+          active = true;
+          activeTouchId = t.identifier;
+          // 最初に位置を読み取って
+          handleStickMove(t.clientX, t.clientY);
+        }
       });
 
-      // touchmove
-      stickArea.addEventListener("touchmove", (e) => {
-        e.preventDefault();
+      // → 指が外に出ても同じ指ID で操作継続したいので window に touchmove
+      window.addEventListener("touchmove", (e) => {
         if (!active) return;
-        const t = e.touches[0];
-        handleTouchMove(t);
+        for (const t of e.changedTouches) {
+          if (t.identifier === activeTouchId) {
+            e.preventDefault();
+            handleStickMove(t.clientX, t.clientY);
+            break;
+          }
+        }
       });
 
-      // touchend
-      stickArea.addEventListener("touchend", (e) => {
-        e.preventDefault();
-        active = false;
-        // 離したらキーOFF
-        this.keys["ArrowLeft"]  = false;
-        this.keys["ArrowRight"] = false;
-        this.keys["ArrowUp"]    = false;
-        this.keys["ArrowDown"]  = false;
+      // 指が離れた → 操作終了
+      window.addEventListener("touchend", (e) => {
+        if (!active) return;
+        for (const t of e.changedTouches) {
+          if (t.identifier === activeTouchId) {
+            e.preventDefault();
+            active = false;
+            activeTouchId = null;
+            // 離したらキーOFF
+            this.keys["ArrowLeft"]  = false;
+            this.keys["ArrowRight"] = false;
+            this.keys["ArrowUp"]    = false;
+            this.keys["ArrowDown"]  = false;
+            break;
+          }
+        }
+      });
+
+      window.addEventListener("touchcancel", (e) => {
+        if (!active) return;
+        for (const t of e.changedTouches) {
+          if (t.identifier === activeTouchId) {
+            e.preventDefault();
+            active = false;
+            activeTouchId = null;
+            // 離したらキーOFF
+            this.keys["ArrowLeft"]  = false;
+            this.keys["ArrowRight"] = false;
+            this.keys["ArrowUp"]    = false;
+            this.keys["ArrowDown"]  = false;
+            break;
+          }
+        }
       });
     }
 
@@ -221,6 +248,10 @@ class Engine {
         e.preventDefault();
         this.keys["ArrowUp"] = false;
       });
+      arrowUp.addEventListener("touchcancel", (e)=>{
+        e.preventDefault();
+        this.keys["ArrowUp"] = false;
+      });
     }
     if (arrowDown) {
       arrowDown.addEventListener("touchstart", (e)=>{
@@ -228,6 +259,10 @@ class Engine {
         this.keys["ArrowDown"] = true;
       });
       arrowDown.addEventListener("touchend", (e)=>{
+        e.preventDefault();
+        this.keys["ArrowDown"] = false;
+      });
+      arrowDown.addEventListener("touchcancel", (e)=>{
         e.preventDefault();
         this.keys["ArrowDown"] = false;
       });
@@ -241,6 +276,10 @@ class Engine {
         e.preventDefault();
         this.keys["ArrowLeft"] = false;
       });
+      arrowLeft.addEventListener("touchcancel", (e)=>{
+        e.preventDefault();
+        this.keys["ArrowLeft"] = false;
+      });
     }
     if (arrowRight) {
       arrowRight.addEventListener("touchstart", (e)=>{
@@ -248,6 +287,10 @@ class Engine {
         this.keys["ArrowRight"] = true;
       });
       arrowRight.addEventListener("touchend", (e)=>{
+        e.preventDefault();
+        this.keys["ArrowRight"] = false;
+      });
+      arrowRight.addEventListener("touchcancel", (e)=>{
         e.preventDefault();
         this.keys["ArrowRight"] = false;
       });
