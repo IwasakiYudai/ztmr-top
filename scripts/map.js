@@ -1,24 +1,8 @@
 // map.js
 
 class GameMap {
-  constructor() {
-    this.data = [
-      "====================",
-      "=E................E=",
-      "=.===.=.======.===.=",
-      "=..S..=......=..S..=",
-      "=.===.=.====.=.===.=",
-      "=.....=......=.....=",
-      "=.===.======.=.===.=",
-      "..........P.........",
-      "===.===.====.===.===",
-      "===...=......=...===",
-      "===.=.=.====.=.=.===",
-      "=S..=..........=..S=",
-      "=.=====.====.=====.=",
-      "=E................E=",
-      "====================",
-    ];
+  constructor(data) {
+    this.data = data;
     this.tileSize = 32;
     this.width = this.data[0].length;
     this.height = this.data.length;
@@ -38,7 +22,10 @@ class GameMap {
           engine.addObject(new Scroll(col, row));
         } else if (c === "P") {
           // プレイヤー
-          engine.addObject(new Player(col, row));
+          let p = new Player(col, row);
+          // ここでライフをエンジンの値に合わせる
+          p.life = engine.playerLife;
+          engine.addObject(p);
         } else if (c === "E") {
           // 敵
           engine.addObject(new Enemy(col, row));

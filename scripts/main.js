@@ -2,227 +2,426 @@
 
 let engine = null;
 
+/** 複数ステージのマップデータ */
+const stageData = [
+  [
+    "====================",
+    "=..................=",
+    "=.===.=.======.===.=",
+    "=..S..=......=..S..=",
+    "=.===.=.====.=.===.=",
+    "=.....=......=.....=",
+    "=.===.======.=.===.=",
+    "=.........P........=",
+    "===.===.====.===.===",
+    "===...=......=...===",
+    "===.=.=.====.=.=.===",
+    "=S..=..........=..S=",
+    "=.=====.====.=====.=",
+    "=E.................=",
+    "====================",
+  ],
+  [
+    // 例: 2面目 (省略・適宜追加)
+    "====================",
+    "=..................=",
+    "=.===.=.======.===.=",
+    "=..S..=......=..S..=",
+    "=.===.=.====.=.===.=",
+    "=.....=......=.....=",
+    "=.===.======.=.===.=",
+    "=.........P........=",
+    "===.===.====.===.===",
+    "===...=......=...===",
+    "===.=.=.====.=.=.===",
+    "=S..=..........=..S=",
+    "=.=====.====.=====.=",
+    "=E.................=",
+    "====================",
+  ],
+  [
+    // 例: 3面目 (省略・適宜追加)
+    "====================",
+    "=.................E=",
+    "=.===.=.======.===.=",
+    "=..S..=......=..S..=",
+    "=.===.=.====.=.===.=",
+    "=.....=......=.....=",
+    "=.===.======.=.===.=",
+    "=.........P........=",
+    "===.===.====.===.===",
+    "===...=......=...===",
+    "===.=.=.====.=.=.===",
+    "=S..=..........=..S=",
+    "=.=====.====.=====.=",
+    "=E.................=",
+    "====================",
+  ],
+  [
+    // 例: 4面目 (省略・適宜追加)
+    "====================",
+    "=.................E=",
+    "=.===.=.======.===.=",
+    "=..S..=......=..S..=",
+    "=.===.=.====.=.===.=",
+    "=.....=......=.....=",
+    "=.===.======.=.===.=",
+    "=.........P........=",
+    "===.===.====.===.===",
+    "===...=......=...===",
+    "===.=.=.====.=.=.===",
+    "=S..=..........=..S=",
+    "=.=====.====.=====.=",
+    "=E.................=",
+    "====================",
+  ],
+  [
+    // 例: 5面目 (省略・適宜追加)
+    "====================",
+    "=.................E=",
+    "=.===.=.======.===.=",
+    "=..S..=......=..S..=",
+    "=.===.=.====.=.===.=",
+    "=.....=......=.....=",
+    "=.===.======.=.===.=",
+    "=.........P........=",
+    "===.===.====.===.===",
+    "===...=......=...===",
+    "===.=.=.====.=.=.===",
+    "=S..=..........=..S=",
+    "=.=====.====.=====.=",
+    "=E................E=",
+    "====================",
+  ],
+  [
+    // 例: 6面目 (省略・適宜追加)
+    "====================",
+    "=.................E=",
+    "=.===.=.======.===.=",
+    "=..S..=......=..S..=",
+    "=.===.=.====.=.===.=",
+    "=.....=......=.....=",
+    "=.===.======.=.===.=",
+    "=.........P........=",
+    "===.===.====.===.===",
+    "===...=......=...===",
+    "===.=.=.====.=.=.===",
+    "=S..=..........=..S=",
+    "=.=====.====.=====.=",
+    "=E................E=",
+    "====================",
+  ],
+  [
+    // 例: 7面目 (省略・適宜追加)
+    "====================",
+    "=E................E=",
+    "=.===.=.======.===.=",
+    "=..S..=......=..S..=",
+    "=.===.=.====.=.===.=",
+    "=.....=......=.....=",
+    "=.===.======.=.===.=",
+    "=.........P........=",
+    "===.===.====.===.===",
+    "===...=......=...===",
+    "===.=.=.====.=.=.===",
+    "=S..=..........=..S=",
+    "=.=====.====.=====.=",
+    "=E................E=",
+    "====================",
+  ],
+  [
+    // 例: 8面目 (省略・適宜追加)
+    "====================",
+    "=E................E=",
+    "=.===.=.======.===.=",
+    "=..S..=......=..S..=",
+    "=.===.=.====.=.===.=",
+    "=.....=......=.....=",
+    "=.===.======.=.===.=",
+    "=.........P........=",
+    "===.===.====.===.===",
+    "===...=......=...===",
+    "===.=.=.====.=.=.===",
+    "=S..=..........=..S=",
+    "=.=====.====.=====.=",
+    "=E................E=",
+    "====================",
+  ],
+  [
+    // 例: 9面目 (省略・適宜追加)
+    "====================",
+    "=E................E=",
+    "=.===.=.======.===.=",
+    "=..S..=......=..S..=",
+    "=.===.=.====.=.===.=",
+    "=.....=......=.....=",
+    "=.===.======.=.===.=",
+    "=.........P........=",
+    "===.===.====.===.===",
+    "===...=..E...=...===",
+    "===.=.=.====.=.=.===",
+    "=S..=..........=..S=",
+    "=.=====.====.=====.=",
+    "=E................E=",
+    "====================",
+  ],
+  [
+    // 例: 10面目 (省略・適宜追加)
+    "====================",
+    "=E................E=",
+    "=.===.=.======.===.=",
+    "=..S..=..E...=..S..=",
+    "=.===.=.====.=.===.=",
+    "=.....=......=.....=",
+    "=.===.======.=.===.=",
+    "=.........P........=",
+    "===.===.====.===.===",
+    "===...=..E...=...===",
+    "===.=.=.====.=.=.===",
+    "=S..=..........=..S=",
+    "=.=====.====.=====.=",
+    "=E................E=",
+    "====================",
+  ],
+];
+
+/** 現在のステージ番号 */
+let stageIndex = 0;
+
 /****************************************
- * 1) ページ読み込み時のメイン処理
+ * ページ読み込み時
  ****************************************/
 window.onload = async () => {
   const canvas = document.getElementById("gameCanvas");
-  // エンジン作成
   engine = new Engine(canvas);
 
-  // -------------------------------------
-  // ゲームオーバー時のコールバック
-  // -------------------------------------
+  // ▼ ゲームオーバー時のコールバック ▼
   engine.onGameOverCallback = (finalScore) => {
-    // 1) ランキング追加
+    // ランキング登録
     addScoreToRanking("Player", finalScore);
 
-    // 2) ランキングHTML生成して表示
-    const html = getRankingHTML();
+    // ランキング表示
+    const html    = getRankingHTML();
     const rankOvl = document.getElementById("rankingOverlay");
-    const rankList = document.getElementById("rankingList");
-    if (rankOvl && rankList) {
-      rankList.innerHTML = html;
-      rankOvl.style.display = "flex"; // ランキングオーバーレイを表示
+    const rankLst = document.getElementById("rankingList");
+    if (rankOvl && rankLst) {
+      rankLst.innerHTML = html;
+      rankOvl.style.display = "flex";
     }
 
-    // 3) ゲームオーバーオーバーレイも表示したいなら:
-    const gameOverOvl = document.getElementById("gameOverOverlay");
-    const msg = document.getElementById("gameOverMessage");
-    if (gameOverOvl && msg) {
+    // ゲームオーバー画面表示
+    const overOvl = document.getElementById("gameOverOverlay");
+    const msg     = document.getElementById("gameOverMessage");
+    if (overOvl && msg) {
       msg.textContent = `ゲームオーバー！ Score: ${finalScore}`;
-      gameOverOvl.style.display = "flex";
+      overOvl.style.display = "flex";
     }
   };
 
   // アセット読み込み
   await engine.loadAssets();
 
-  // マップ生成
-  engine.gameMap = new GameMap();
-  engine.gameMap.init(engine);
+  // 最初のステージをロード (まだ start() はしない)
+  stageIndex = 0;
+  loadStage(stageIndex);
 
-  // -------------------------------------
-  // 各ボタンのイベント設定
-  // -------------------------------------
-
-  // ゲーム開始ボタン (スタート画面)
+  // ▼▼ スタート画面「ゲームを始める」ボタン ▼▼
   const startBtn = document.getElementById("startGameBtn");
   if (startBtn) {
     startBtn.addEventListener("click", () => {
-      // スタートオーバーレイを消してゲーム開始
       document.getElementById("startOverlay").style.display = "none";
-      engine.start();
+      engine.start();  // ゲーム開始
     });
   }
 
-  // リスタートボタン (ゲームオーバー画面)
+  // ▼▼ ゲームオーバー画面の「リスタート」ボタン ▼▼
   const restartBtn = document.getElementById("restartBtn");
   if (restartBtn) {
     restartBtn.addEventListener("click", () => {
-      // ゲームオーバー画面を消し、リセット
       document.getElementById("gameOverOverlay").style.display = "none";
-      resetGame();
+      resetAllGame(); // 最初からやり直す
     });
   }
 
-  // ランキング閉じるボタン
+  const arrowUp = document.getElementById("arrowUp");
+  arrowUp.addEventListener("touchstart", () => { engine.keys["ArrowUp"] = true; });
+  arrowUp.addEventListener("touchend",   () => { engine.keys["ArrowUp"] = false; });
+
+
+  // ▼▼ ランキング閉じるボタン ▼▼
   const closeRankBtn = document.getElementById("closeRankBtn");
   if (closeRankBtn) {
     closeRankBtn.addEventListener("click", () => {
-      // ランキングオーバーレイを消す
       document.getElementById("rankingOverlay").style.display = "none";
-      // 必要に応じてゲーム再開するなら↓
-      // engine.start();
     });
   }
 
-  // 「遊ぶ」「ランキング」「遊び方」ボタン (下のメニュー)
+  // ▼▼ 下メニュー: 「遊ぶ」「ランキング」「遊び方」ボタン ▼▼
   const playBtn   = document.getElementById("playBtn");
   const rankBtn   = document.getElementById("rankBtn");
   const manualBtn = document.getElementById("manualBtn");
 
-  // 遊ぶ: スタート画面に戻す
+  // 「遊ぶ」→ 最初から
   if (playBtn) {
     playBtn.addEventListener("click", () => {
-      // ゲームを止めて、すべてのオーバーレイを隠し
-      engine.stop();
       hideAllOverlays();
-      // startOverlayを表示
-      document.getElementById("startOverlay").style.display = "flex";
+      resetAllGame(); 
     });
   }
 
-  // ランキング: ランキング画面を開く
+  // 「ランキング」→ ランキング表示
   if (rankBtn) {
     rankBtn.addEventListener("click", () => {
-      // ゲーム停止
       engine.stop();
       hideAllOverlays();
-      // ランキングを更新して表示
-      const rankHtml = getRankingHTML();
-      const rankList = document.getElementById("rankingList");
-      if (rankList) rankList.innerHTML = rankHtml;
-
-      const rankOvl = document.getElementById("rankingOverlay");
-      if (rankOvl) rankOvl.style.display = "flex";
+      const html  = getRankingHTML();
+      const list  = document.getElementById("rankingList");
+      if (list) list.innerHTML = html;
+      const rovl = document.getElementById("rankingOverlay");
+      if (rovl) rovl.style.display = "flex";
     });
   }
 
-  // 遊び方: いまはアラートのみ
+  // 「遊び方」→ いまはアラート
   if (manualBtn) {
     manualBtn.addEventListener("click", () => {
-      alert("遊び方はまだ準備中です。十字キー / WASD で移動、敵に当たらないよう巻物を集める等。");
+      alert("遊び方は準備中です。\n十字キー/WASD で移動、敵に当たらないようドットと巻物を集める！");
     });
   }
 };
 
 /****************************************
- * 2) ゲームをリセットする処理 (簡易)
+ * ステージをロード (stageIndex番)
  ****************************************/
-function resetGame() {
-  // いまのゲームを止めて画面クリア
+function loadStage(index) {
+  // いったん停止 & 画面クリア
   engine.stop();
   engine.ctx.clearRect(0, 0, 640, 480);
 
-  // 新しいEngineを作り直し (同じcanvas)
-  engine = new Engine(document.getElementById("gameCanvas"));
+  // 既存オブジェクトを消す
+  engine.objects = [];
 
-  // onGameOverCallbackを再設定
-  engine.onGameOverCallback = (finalScore) => {
-    addScoreToRanking("Player", finalScore);
-    const html = getRankingHTML();
-    const rankOvl = document.getElementById("rankingOverlay");
-    const rankList = document.getElementById("rankingList");
-    if (rankOvl && rankList) {
-      rankList.innerHTML = html;
-      rankOvl.style.display = "flex";
-    }
-    const gameOverOvl = document.getElementById("gameOverOverlay");
-    const msg = document.getElementById("gameOverMessage");
-    if (gameOverOvl && msg) {
-      msg.textContent = `ゲームオーバー！ Score: ${finalScore}`;
-      gameOverOvl.style.display = "flex";
-    }
-  };
-
-  // アセット再読み込みし、マップも再初期化
-  engine.loadAssets().then(() => {
-    engine.gameMap = new GameMap();
-    engine.gameMap.init(engine);
-    engine.start();
-  });
+  // 新しいマップを生成
+  const data = stageData[index];
+  engine.gameMap = new GameMap(data);
+  engine.gameMap.init(engine);
 }
 
 /****************************************
- * 3) 全オーバーレイを非表示にする
+ * 全ゲームを最初からリセット
+ * (ライフ3, スコア0, ステージ0 に戻す)
+ ****************************************/
+function resetAllGame() {
+  engine.stop();
+  engine.ctx.clearRect(0, 0, 640, 480);
+
+  engine.score      = 0;
+  engine.playerLife = 3;   // エンジンにあるライフを初期化
+
+  stageIndex = 0;
+  engine.objects = [];
+
+  loadStage(stageIndex);
+  engine.start();
+}
+
+/****************************************
+ * 全ドット取得 → 次ステージ
+ ****************************************/
+function nextStage() {
+  stageIndex++;
+  if (stageIndex >= stageData.length) {
+    // 全ステージクリア
+    alert("全ステージクリア!\nScore: " + engine.score);
+    addScoreToRanking("Player", engine.score);
+    engine.stop();
+    // もう一度最初からでもOK
+    stageIndex = 0;
+    engine.score = 0;
+    engine.playerLife = 3;
+    loadStage(stageIndex);
+    return;
+  }
+  // 次ステージへ
+  loadStage(stageIndex);
+  engine.start();
+}
+
+/****************************************
+ * ライフが減った: スコアそのままでステージだけリセット
+ ****************************************/
+function stageResetButKeepScore() {
+  engine.stop();
+  engine.ctx.clearRect(0, 0, 640, 480);
+
+  // objectsを空にして同じstageIndexを再度読み込み
+  engine.objects = [];
+  loadStage(stageIndex);
+  engine.start();
+}
+
+/****************************************
+ * オーバーレイを全部隠す
  ****************************************/
 function hideAllOverlays() {
-  ["startOverlay", "gameOverOverlay", "rankingOverlay"].forEach(id => {
+  const list = ["startOverlay","gameOverOverlay","rankingOverlay"];
+  for (const id of list) {
     const el = document.getElementById(id);
-    if (el) el.style.display = "none";
-  });
+    if (el) el.style.display="none";
+  }
 }
 
 /****************************************
- * 4) クッキーを使ったランキング関連
+ * ランキング (クッキー)
  ****************************************/
 function setCookie(name, value, days=365) {
   const d = new Date();
   d.setTime(d.getTime() + (days*24*60*60*1000));
   const expires = "expires="+ d.toUTCString();
-  document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+  document.cookie = `${name}=${encodeURIComponent(value)};${expires};path=/`;
 }
 
 function getCookie(name) {
-  const decodedCookie = decodeURIComponent(document.cookie);
-  const cookieArr = decodedCookie.split(';');
-  for (let i=0; i<cookieArr.length; i++){
-    let c = cookieArr[i].trim();
-    if (c.indexOf(name + "=")===0) {
-      return c.substring((name+"=").length, c.length);
+  const decoded = decodeURIComponent(document.cookie);
+  const arr     = decoded.split(";");
+  for(const cStr of arr){
+    const c = cStr.trim();
+    if(c.indexOf(name+"=")===0){
+      return c.substring((name+"=").length);
     }
   }
   return "";
 }
 
-// ランキング配列をクッキーから読み込み
 function loadRankingFromCookie() {
   const val = getCookie("myGameRanking");
-  if (!val) return [];
+  if(!val) return [];
   try {
     return JSON.parse(val);
-  } catch(e) {
-    console.error("Failed to parse ranking cookie:", e);
+  } catch(e){
+    console.error("ranking parse error", e);
     return [];
   }
 }
 
-// ランキングをクッキーに保存
 function saveRankingToCookie(arr) {
   const str = JSON.stringify(arr);
   setCookie("myGameRanking", str, 365);
 }
 
-// スコアをランキングに追加 → 上位10件に絞る → クッキー保存
 function addScoreToRanking(name, score) {
   let rank = loadRankingFromCookie();
-  rank.push({
-    name: name,
-    score: score,
-    date: new Date().toISOString().slice(0,10),
-  });
-  rank.sort((a,b) => b.score - a.score);
+  rank.push({ name, score, date: new Date().toISOString().slice(0,10) });
+  rank.sort((a,b)=> b.score - a.score);
   rank = rank.slice(0,10);
   saveRankingToCookie(rank);
 }
 
-// HTMLリストを生成
 function getRankingHTML() {
   const rank = loadRankingFromCookie();
   let html = "";
-  rank.forEach((r, i) => {
-    html += `<li>${i+1}. ${r.name} - ${r.score} pts (${r.date})</li>`;
+  rank.forEach((r,i)=>{
+    html+=`<li>${i+1}. ${r.name} - ${r.score} pts (${r.date})</li>`;
   });
   return `<ol>${html}</ol>`;
 }

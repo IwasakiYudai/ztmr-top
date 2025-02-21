@@ -6,7 +6,7 @@ class Player {
     this.row = row;
     this.x = col * 32;
     this.y = row * 32;
-    this.speed = 100;
+    this.speed = 200;
     this.width = 24;
     this.height = 24;
 
@@ -75,10 +75,10 @@ class Player {
       // パワー中かつ壁で方向転換 → ドット取り損ね?
       if(this.powerKillEnabled){
         this.failCount++;
-        if(this.failCount >= 2){
+        if(this.failCount >= 1){
           // 2回 → failTimer=2秒後に解除
           if(this.failTimer<=0){
-            this.failTimer = 2;
+            this.failTimer = 1;
           }
         }
       }
@@ -108,6 +108,12 @@ class Player {
           }
         }
       }
+      const anyDot = engine.objects.some(o => o instanceof Dot && !o.dead);
+      if(!anyDot){
+      // すべてのDotが無い → 次のステージ
+      nextStage();  // main.jsに定義した関数
+      return; 
+      }
 
       // 巻物(Scroll)
       if(obj instanceof Scroll && !obj.dead){
@@ -133,10 +139,12 @@ class Player {
             // ダメージ
             if(this.invincibleTimer<=0){
               this.life--;
+              engine.playerLife = this.life;  // ★ エンジンにも反映
               if(this.life<=0){
                 engine.gameOver();
               } else {
-                this.invincibleTimer=3; 
+                stageResetButKeepScore();
+                return;
               }
             }
           }
@@ -147,7 +155,7 @@ class Player {
 
   // ▼=== (4) パワー開始 ===
   startPower(engine){
-    this.powerTimer=5;          // 5秒
+    this.powerTimer=3;          // 5秒
     this.powerKillEnabled=true; 
     this.failCount=0;
     this.failTimer=0;

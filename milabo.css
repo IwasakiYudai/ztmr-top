@@ -109,6 +109,72 @@ body {
     border: 2px solid #fff;
 }
 
+.game-layout {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
+    /* 画面全体を使うなら vh */
+    /* or if you want to just auto based on content, then remove this. */
+    gap: 10px;
+    /* align-items: flex-start; でもOK。今回は高さを満たすため startのままでもいい */
+}
+
+/* 左カラム, 右カラム */
+.left-controls,
+.right-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    /* 好みで固定幅にするなら: width: 100px; */
+}
+
+/* 仮想スティックの見た目 */
+#virtualStickArea {
+    width: 120px;
+    height: 120px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    touch-action: none;
+    /* スクロール抑止 */
+}
+
+/* 十字キー全体 */
+#virtualArrows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 例: 幅100px */
+    width: 100px;
+}
+
+/* 上下左右のボタン */
+#arrowUp,
+#arrowDown,
+#arrowLeft,
+#arrowRight {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    margin: 5px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 8px;
+}
+
+/* 左右ボタンを横に並べたければ #arrowLeft と #arrowRight を包む div を flex化 */
+#virtualArrows>div {
+    display: flex;
+    gap: 10px;
+}
+
+
+
+
 .menu-container {
     display: flex;
     flex-direction: column;

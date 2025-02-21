@@ -37,45 +37,49 @@
             </p>
         </div>
 
-        <div id="gameContainer">
-            <canvas id="gameCanvas" width="640" height="480"></canvas>
+        <div class="game-layout">
+            <!-- 左カラム: スティック -->
+            <div class="left-controls">
+                <div id="virtualStickArea"></div>
+            </div>
         
-            <!-- canvas と同サイズのオーバーレイ -->
-            <div id="startOverlay" class="overlay-canvas">
-                <button id="startGameBtn" class="menu-button black-gold">
-                    ゲームを始める
-                </button>
-            </div>
-
-            <div id="gameOverOverlay" class="overlay-canvas" style="display:none;">
-                <div id="gameOverPanel">
-                    <h2 id="gameOverMessage" style="color:#fff; margin-bottom: 1em;">
-                        ゲームオーバー！ Score: 0
-                    </h2>
-                    <!-- 再スタートボタンなど置いてもよい -->
-                    <button id="restartBtn" class="menu-button black-gold">
-                        リスタート
-                    </button>
+            <!-- 中央カラム: ゲームコンテナ (canvas+オーバーレイ) -->
+            <div id="gameContainer">
+                <canvas id="gameCanvas" width="640" height="480"></canvas>
+        
+                <!-- 各オーバーレイ -->
+                <div id="startOverlay" class="overlay-canvas">
+                    <button id="startGameBtn" class="menu-button black-gold">ゲームを始める</button>
+                </div>
+        
+                <div id="gameOverOverlay" class="overlay-canvas" style="display:none;">
+                    <!-- ... ゲームオーバー要素 ... -->
+                </div>
+        
+                <div id="rankingOverlay" class="overlay-canvas" style="display:none;">
+                    <!-- ... ランキング要素 ... -->
                 </div>
             </div>
-
-            <div id="rankingOverlay" class="overlay-canvas" style="display:none;">
-                <div style="text-align: center; color: #fff;">
-                    <h2>ランキング</h2>
-                    <ul id="rankingList">
-                    </ul>
+        
+            <!-- 右カラム: 十字キー -->
+            <div class="right-controls">
+                <div id="virtualArrows">
+                    <div id="arrowUp">▲</div>
+                    <div>
+                        <div id="arrowLeft">◀</div>
+                        <div id="arrowRight">▶</div>
+                    </div>
+                    <div id="arrowDown">▼</div>
                 </div>
-                <button id="closeRankBtn" class="menu-button black-gold">閉じる</button>
             </div>
-        </div>
+        </div><!-- /.game-layout -->
+
 
         <script src="scripts/engine.js"></script>
         <script src="scripts/map.js"></script>
         <script src="scripts/player.js"></script>
         <script src="scripts/enemy.js"></script>
         <script src="scripts/main.js"></script>
-
-
 
 
         <p class="button-notice">下記のボタンをクリックすると、ゲーム画面上に説明などが表示されます。
