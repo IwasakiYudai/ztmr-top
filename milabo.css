@@ -145,12 +145,11 @@ body {
 }
 
 /* 十字キー全体 */
-#virtualArrows {
+.verticalArrows {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    /* 例: 幅100px */
-    width: 100px;
+    gap: 10px;
+    /* 必要に応じて margin-top: 20px; などを追加 */
 }
 
 /* 上下左右のボタン */
@@ -168,12 +167,11 @@ body {
     border-radius: 8px;
 }
 
-/* 左右ボタンを横に並べたければ #arrowLeft と #arrowRight を包む div を flex化 */
-#virtualArrows>div {
+.horizontalArrows {
     display: flex;
+    flex-direction: row;
     gap: 10px;
 }
-
 
 
 

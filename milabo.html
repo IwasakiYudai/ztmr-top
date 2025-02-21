@@ -41,6 +41,10 @@
             <!-- 左カラム: スティック -->
             <div class="left-controls">
                 <div id="virtualStickArea"></div>
+                <div class="verticalArrows">
+                    <div id="arrowUp">▲</div>
+                    <div id="arrowDown">▼</div>
+                </div>
             </div>
         
             <!-- 中央カラム: ゲームコンテナ (canvas+オーバーレイ) -->
@@ -77,13 +81,9 @@
         
             <!-- 右カラム: 十字キー -->
             <div class="right-controls">
-                <div id="virtualArrows">
-                    <div id="arrowUp">▲</div>
-                    <div>
-                        <div id="arrowLeft">◀</div>
-                        <div id="arrowRight">▶</div>
-                    </div>
-                    <div id="arrowDown">▼</div>
+                <div class="horizontalArrows">
+                    <div id="arrowLeft">◀</div>
+                    <div id="arrowRight">▶</div>
                 </div>
             </div>
         </div><!-- /.game-layout -->

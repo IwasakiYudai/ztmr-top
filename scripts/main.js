@@ -291,7 +291,7 @@ window.onload = async () => {
   // 「遊び方」→ いまはアラート
   if (manualBtn) {
     manualBtn.addEventListener("click", () => {
-      alert("遊び方は準備中です。\n十字キー/WASD で移動、敵に当たらないようドットと巻物を集める！");
+      alert("十字キー/WASD(スマートフォンはスティック、十字ボタン) で移動、敵に当たらないようドットと巻物を集める！");
     });
   }
 };
