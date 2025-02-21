@@ -1,24 +1,22 @@
 // map.js
-// 簡単なパックマンのマップを文字列配列で管理し、壁やペレットをEngineに追加する
 
 class GameMap {
   constructor() {
-    // パックマンマップ例 (同じもの)
     this.data = [
       "====================",
-      "=.....E.....P......=",
-      "=.==.==.==.==.==.===",
-      "=..........E.......=",
-      "=.==.==.==.==.==.===",
-      "=..................=",
-      "=.==.==.==.==.==.===",
-      "=..................=",
-      "=.==.==.==.==.==.===",
-      "=..................=",
-      "=.==.==.==.==.==.===",
-      "=..................=",
-      "=.==.==.==.==.==.===",
-      "=..................=",
+      "=E................E=",
+      "=.===.=.======.===.=",
+      "=..S..=......=..S..=",
+      "=.===.=.====.=.===.=",
+      "=.....=......=.....=",
+      "=.===.======.=.===.=",
+      "..........P.........",
+      "===.===.====.===.===",
+      "===...=......=...===",
+      "===.=.=.====.=.=.===",
+      "=S..=..........=..S=",
+      "=.=====.====.=====.=",
+      "=E................E=",
       "====================",
     ];
     this.tileSize = 32;
@@ -27,17 +25,17 @@ class GameMap {
   }
 
   init(engine) {
-    // engine.images["wall"], ["pellet"] などを使う想定
-    // 文字を解析してオブジェクトを追加
     for (let row = 0; row < this.height; row++) {
       for (let col = 0; col < this.width; col++) {
         const c = this.data[row][col];
         if (c === "=") {
-          // 壁
           engine.addObject(new Wall(col, row));
         } else if (c === ".") {
-          // ペレット
-          engine.addObject(new Pellet(col, row));
+          // ドット(10点)
+          engine.addObject(new Dot(col, row));
+        } else if (c === "S") {
+          // 巻物 (パワーアップ)
+          engine.addObject(new Scroll(col, row));
         } else if (c === "P") {
           // プレイヤー
           engine.addObject(new Player(col, row));
@@ -49,64 +47,71 @@ class GameMap {
     }
   }
 
-  // あとで衝突判定に使うなど
   isWall(x, y) {
-    // タイル座標に変換
     const col = Math.floor(x / this.tileSize);
     const row = Math.floor(y / this.tileSize);
-    if (row < 0 || row >= this.height || col < 0 || col >= this.width) {
-      return true; // 壁扱い(外)
+    if (row<0 || row>=this.height || col<0 || col>=this.width) {
+      return true;
     }
     return this.data[row][col] === "=";
   }
 }
 
-// 壁, ペレットなどもクラスにまとめる
-
+// 壁
 class Wall {
   constructor(col, row) {
     this.x = col * 32;
     this.y = row * 32;
-    this.width = 32;
-    this.height = 32;
   }
-  update(dt, engine) {
-    // 壁は動かない
-  }
+  update(dt, engine) {}
   draw(ctx, engine) {
-    const img = engine.images["wall"];
-    if (img) {
-      // ★ ここを修正: drawImage(img, x, y, 32, 32) で 32×32に縮小描画
-      ctx.drawImage(img, this.x, this.y, 32, 32);
+    const wimg = engine.images["wall"];
+    if (wimg) {
+      ctx.drawImage(wimg, this.x, this.y, 32, 32);
     } else {
-      // フォールバック: 青い四角
       ctx.fillStyle = "blue";
       ctx.fillRect(this.x, this.y, 32, 32);
     }
   }
 }
 
-class Pellet {
+// ▼ ドット(10点)
+class Dot {
   constructor(col, row) {
-    this.x = col * 32 + 12;
-    this.y = row * 32 + 12;
-    this.radius = 4;
-    this.dead = false; // 破壊フラグ
+    this.x = col * 32 + 16;
+    this.y = row * 32 + 16;
+    this.dead = false;
+    this.scoreValue = 10;
   }
-  update(dt, engine) {
-    // 当たり判定はplayer側が見る or ここで見るかは設計次第
-  }
+  update(dt, engine) {}
   draw(ctx, engine) {
-    const img = engine.images["pellet"];
-    if (img) {
-      // 小さい画像ならdrawImageでもいいし、円を描いてもいい
-      ctx.drawImage(img, this.x - 16, this.y - 16, 32, 32);
+    const dotImg = engine.images["dot"];
+    if (dotImg) {
+      ctx.drawImage(dotImg, this.x - 4, this.y - 4, 8, 8);
     } else {
-      // 画像ないなら円で描画
       ctx.fillStyle = "yellow";
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, 4, 0, Math.PI*2);
       ctx.fill();
+    }
+  }
+}
+
+// ▼ 巻物(パワーアップ用)
+class Scroll {
+  constructor(col, row) {
+    this.x = col*32 + 16;
+    this.y = row*32 + 16;
+    this.dead = false;
+  }
+  update(dt, engine) {}
+  draw(ctx, engine) {
+    const sImg = engine.images["scroll"];
+    if (sImg) {
+      ctx.drawImage(sImg, this.x - 16, this.y - 16, 32, 32);
+    } else {
+      ctx.fillStyle = "orange";
+      ctx.fillRect(this.x-8, this.y-8, 16,16);
     }
   }
 }

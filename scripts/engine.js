@@ -10,19 +10,18 @@ class Engine {
     this.lastTime = 0;
     this.running = false;
 
-    // ▼ 追加 ▼
-    this.score = 0;             // 現在の得点
-    this._survivalAcc = 0;      // 生存時間を計測し、5秒ごと+1点
+    // ▼ 追加(既存) ▼
+    this.score = 0;         // 現在の得点
+    this._survivalAcc = 0;  // 生存時間で加点用
 
-    // ゲームオーバー時に呼び出すコールバック (main.jsで設定予定)
+    // ゲームオーバーのコールバック
     this.onGameOverCallback = null;
 
-    // キーボードイベント
+    // キーボードイベント + 矢印キー等でスクロールしない
     window.addEventListener("keydown", (e) => {
-      // 矢印キーなどのスクロールを防止
       const preventList = [
-        "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
-        "KeyW", "KeyA", "KeyS", "KeyD",
+        "ArrowUp","ArrowDown","ArrowLeft","ArrowRight",
+        "KeyW","KeyA","KeyS","KeyD",
       ];
       if (preventList.includes(e.code)) {
         e.preventDefault();
@@ -34,6 +33,7 @@ class Engine {
     });
   }
 
+  // 画像読み込み
   loadImage(name, src) {
     return new Promise((resolve) => {
       const img = new Image();
@@ -45,12 +45,14 @@ class Engine {
     });
   }
 
+  // 必要な画像を全て読み込む
   async loadAssets() {
     const promises = [];
     promises.push(this.loadImage("wall",   "img/wall.png"));
     promises.push(this.loadImage("player", "img/ahuro.png"));
     promises.push(this.loadImage("enemy",  "img/naga.png"));
-    promises.push(this.loadImage("pellet", "img/scroll.png"));
+    promises.push(this.loadImage("scroll", "img/scroll.png"));  // 巻物
+
     await Promise.all(promises);
   }
 
@@ -68,11 +70,10 @@ class Engine {
     this.running = false;
   }
 
-  // ▼ ゲームオーバーを発動するメソッド ▼
+  // ゲームオーバー
   gameOver() {
-    this.stop();  // ループ停止
+    this.stop();
     if (this.onGameOverCallback) {
-      // コールバックが登録されていれば呼ぶ (得点表示など)
       this.onGameOverCallback(this.score);
     }
   }
@@ -90,7 +91,7 @@ class Engine {
   }
 
   update(dt) {
-    // 5秒ごとに +1点
+    // 5秒ごとに+1点
     this._survivalAcc += dt;
     while (this._survivalAcc >= 5) {
       this.score += 1;
@@ -105,30 +106,27 @@ class Engine {
     }
   }
 
-// engine.js の draw() を変更
-
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // 全オブジェクトの描画
+    // 全オブジェクト描画
     for (const obj of this.objects) {
       if (obj.draw) {
         obj.draw(this.ctx, this);
       }
     }
 
-    // スコア表示
+    // スコア表示 / プレイヤーライフなど
     this.ctx.fillStyle = "#fff";
     this.ctx.font = "20px sans-serif";
 
-    // ▼ プレイヤーライフ表示
     const player = this.objects.find(o => o instanceof Player);
     if (player) {
+      // ライフ と スコア
       this.ctx.fillText(`Score: ${this.score}   Life: ${player.life}`, 10, 30);
     } else {
-  // プレイヤーが存在しない(まだ生成されてない)場合はスコアのみ
+      // プレイヤーいないときスコアのみ
       this.ctx.fillText(`Score: ${this.score}`, 10, 30);
     }
   }
-
 }
