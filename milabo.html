@@ -46,18 +46,32 @@
             <!-- 中央カラム: ゲームコンテナ (canvas+オーバーレイ) -->
             <div id="gameContainer">
                 <canvas id="gameCanvas" width="640" height="480"></canvas>
-        
-                <!-- 各オーバーレイ -->
+            
+                <!-- スタート画面オーバーレイ -->
                 <div id="startOverlay" class="overlay-canvas">
                     <button id="startGameBtn" class="menu-button black-gold">ゲームを始める</button>
                 </div>
-        
+            
+                <!-- ゲームオーバー画面オーバーレイ -->
                 <div id="gameOverOverlay" class="overlay-canvas" style="display:none;">
-                    <!-- ... ゲームオーバー要素 ... -->
+                    <!-- テキストやボタンを中央寄せしたい場合は内部にコンテナを用意 -->
+                    <div id="gameOverPanel" style="text-align:center;">
+                        <!-- ゲームオーバー時のメッセージをここに表示 -->
+                        <h2 id="gameOverMessage" style="color:#fff;"></h2>
+                        <!-- リスタートボタン -->
+                        <button id="restartBtn" class="menu-button black-gold">リスタート</button>
+                    </div>
                 </div>
-        
+            
+                <!-- ランキング表示用オーバーレイ -->
                 <div id="rankingOverlay" class="overlay-canvas" style="display:none;">
-                    <!-- ... ランキング要素 ... -->
+                    <!-- タイトルや閉じるボタンを中央寄せしたいなら -->
+                    <div style="text-align:center; color:#fff;">
+                        <h2>ランキング</h2>
+                        <button id="closeRankBtn" class="menu-button black-gold">閉じる</button>
+                        <!-- JS で生成したランキングリストを innerHTML で入れる場所 -->
+                        <div id="rankingList" style="margin:10px auto;"></div>
+                    </div>
                 </div>
             </div>
         

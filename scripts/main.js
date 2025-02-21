@@ -243,9 +243,6 @@ window.onload = async () => {
     });
   }
 
-  const arrowUp = document.getElementById("arrowUp");
-  arrowUp.addEventListener("touchstart", () => { engine.keys["ArrowUp"] = true; });
-  arrowUp.addEventListener("touchend",   () => { engine.keys["ArrowUp"] = false; });
 
 
   // ▼▼ ランキング閉じるボタン ▼▼
@@ -264,8 +261,17 @@ window.onload = async () => {
   // 「遊ぶ」→ 最初から
   if (playBtn) {
     playBtn.addEventListener("click", () => {
+  // 1) すべてのオーバーレイを隠す
       hideAllOverlays();
-      resetAllGame(); 
+
+      // 2) ゲームを停止＆初期化 (まだ開始しない)
+      resetGameNoStart();
+
+      // 3) スタート画面を再度表示する
+      const startOverlay = document.getElementById("startOverlay");
+      if (startOverlay) {
+        startOverlay.style.display = "flex";
+      }
     });
   }
 
@@ -424,4 +430,22 @@ function getRankingHTML() {
     html+=`<li>${i+1}. ${r.name} - ${r.score} pts (${r.date})</li>`;
   });
   return `<ol>${html}</ol>`;
+}
+
+function resetGameNoStart() {
+  // いったん停止 & 画面クリア
+  engine.stop();
+  engine.ctx.clearRect(0, 0, 640, 480);
+
+  // スコアとライフを初期化
+  engine.score      = 0;
+  engine.playerLife = 3; 
+
+  // ステージインデックスを0に戻す
+  stageIndex = 0;
+  // オブジェクト配列を空に
+  engine.objects = [];
+
+  // ステージをロード (まだ start はしない)
+  loadStage(stageIndex);
 }
