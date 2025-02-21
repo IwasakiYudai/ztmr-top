@@ -324,9 +324,12 @@ window.onload = async () => {
       // ランキング登録ボタンが押されたとき
       registerBtn.onclick = () => {
         // 名前入力があれば登録
-        const name = nameInput.value.trim();
-        if (name) {
-          addScoreToRanking(name, finalScore);
+        const rawName = nameInput.value;
+        const safeName = sanitizeName(rawName); // 例: 空白除去＆禁止ワードチェック
+
+        if (safeName.length > 0) {
+          // 文字数が0じゃなければ、ランキング登録
+          addScoreToRanking(safeName, finalScore);
         }
         // 入力欄 & 登録ボタン & メッセージを隠す
         nameInput.style.display   = "none";
@@ -499,7 +502,7 @@ function hideAllOverlays() {
 /****************************************
  * ランキング (クッキー)
  ****************************************/
-function setCookie(name, value, days=365) {
+function setCookie(name, value, days=731) {
   const d = new Date();
   d.setTime(d.getTime() + (days*24*60*60*1000));
   const expires = "expires="+ d.toUTCString();
@@ -567,4 +570,64 @@ function resetGameNoStart() {
 
   // ステージをロード (まだ start はしない)
   loadStage(stageIndex);
+}
+
+
+/**
+ * sanitizeName(rawName):
+ * - 前後の空白除去
+ * - 10文字制限
+ * - 禁止ワード ( blockedWords ) を含んでいたら "???" に置き換える
+ */
+function sanitizeName(rawName) {
+  // 例: 先頭と末尾の空白除去
+  let name = rawName.trim();
+
+  // 長さ制限（任意: 10文字まで）
+  if (name.length > 10) {
+    name = name.substring(0, 10);
+  }
+
+  // 禁止ワードの簡易チェック
+  const blockedWords = [
+    // ▼ 暴言・罵倒
+    "死ね",
+    "しね",
+    "殺す",
+    "くたばれ",
+    "ばか",     // 漢字表記「馬鹿」なども必要に応じて追加
+    "あほ",
+    "クソ",     // 大文字・小文字、ひらがな・カタカナも考慮
+    "糞",
+
+    // ▼ 下品・性的表現
+    "まんこ",
+    "ちんこ",
+    "ちんちん",
+    "まんまん",
+    "オメコ",
+    "フェラ",
+    "セックス",
+    "sex",      // ローマ字/英語表記も考慮
+    "fuck",     // 英語での罵倒・卑猥表現
+    "shit",
+    "bitch",
+
+    // ▼ その他、不快・脅迫表現
+    "氏ね",     // 「死ね」の変形表記
+    "殺すぞ",
+    "死んじまえ",
+    // ... 必要に応じて追加
+  ];
+
+  const lower = name.toLowerCase();
+  for (let w of blockedWords) {
+    if (lower.includes(w)) {
+      // 該当単語を含む → 強制的に "???"
+      name = "???";
+      break;
+    }
+  }
+
+  return name;
 }
