@@ -26,3 +26,12 @@ if (shareBtn) {
     window.open(twitterIntentUrl, "_blank");
   });
 }
+
+const backToMenuBtn = document.getElementById("backToMenuBtn");
+if (backToMenuBtn) {
+  backToMenuBtn.addEventListener("click", () => {
+    // 同じフォルダに "ztmr_fansite_index.html" がある場合
+    window.location.href = "ztmr_fansite_index.html";
+  });
+}
+
