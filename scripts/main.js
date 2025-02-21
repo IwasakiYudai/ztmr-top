@@ -197,27 +197,38 @@ window.onload = async () => {
 
   // ▼ ゲームオーバー時のコールバック ▼
   engine.onGameOverCallback = (finalScore) => {
-    // ランキング登録
-    addScoreToRanking("Player", finalScore);
-
-    // ランキング表示
-    const html    = getRankingHTML();
-    const rankOvl = document.getElementById("rankingOverlay");
-    const rankLst = document.getElementById("rankingList");
-    if (rankOvl && rankLst) {
-      rankLst.innerHTML = html;
-      rankOvl.style.display = "flex";
-    }
-
-    // ゲームオーバー画面表示
+  // ゲームオーバー画面を表示
     const overOvl = document.getElementById("gameOverOverlay");
     const msg     = document.getElementById("gameOverMessage");
-    if (overOvl && msg) {
+    const nameInput = document.getElementById("playerNameInput");
+    const registerBtn = document.getElementById("registerScoreBtn");
+    const restartBtn  = document.getElementById("restartBtn");
+
+    if (overOvl && msg && nameInput && registerBtn && restartBtn) {
+      // メッセージと入力欄、登録ボタンを最初は表示状態に戻す(複数回ゲームオーバー時のため)
+      msg.style.display          = "block";
+      nameInput.style.display    = "block";
+      registerBtn.style.display  = "inline-block";
+
       msg.textContent = `ゲームオーバー！ Score: ${finalScore}`;
       overOvl.style.display = "flex";
+
+      // ランキング登録ボタンが押されたとき
+      registerBtn.onclick = () => {
+        // 名前入力があれば登録
+        const name = nameInput.value.trim();
+        if (name) {
+          addScoreToRanking(name, finalScore);
+        }
+        // 入力欄 & 登録ボタン & メッセージを隠す
+        nameInput.style.display   = "none";
+        registerBtn.style.display = "none";
+        msg.style.display         = "none";
+
+        // → 結果、リスタートボタンだけが残る状態に
+      };
     }
   };
-
   // アセット読み込み
   await engine.loadAssets();
 
