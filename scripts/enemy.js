@@ -9,7 +9,7 @@ class Enemy {
     // 通常速度
     this.baseSpeed = 180;
     // 逃走時速度
-    this.escapeSpeed = 160;
+    this.escapeSpeed = 140;
 
     // 死亡フラグ(不要なら消してOK)
     this.dead = false;
