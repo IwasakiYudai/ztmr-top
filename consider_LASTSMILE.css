@@ -1,0 +1,160 @@
+/* ベースレイアウト */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Yu Gothic",
+    "Hiragino Sans", sans-serif;
+  color: #333;
+  background: #f8f5ff;
+}
+
+/* ヘッダー */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.site-header__inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-title a {
+  font-weight: 700;
+  text-decoration: none;
+  color: #e15f9a;
+  font-size: 14px;
+}
+
+.site-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.site-nav a {
+  text-decoration: none;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: #555;
+}
+
+.site-nav a:hover {
+  background: rgba(225, 95, 154, 0.08);
+}
+
+.site-nav a.is-active {
+  background: #e15f9a;
+  color: #fff;
+}
+
+/* 本文 */
+.consider-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.consider-article {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 18px 24px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+}
+
+.consider-article h1 {
+  margin: 0 0 12px;
+  font-size: 22px;
+}
+
+.consider-article p {
+  margin: 0 0 6px;
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+/* クリックでちょっとだけ目立たせる用（JSで付け外し） */
+.consider-article p.is-highlight {
+  background: rgba(225, 95, 154, 0.08);
+  border-radius: 6px;
+}
+
+/* フッター */
+.site-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 12px 16px 18px;
+  text-align: center;
+  font-size: 12px;
+  color: #777;
+}
+
+.site-footer a {
+  color: #e15f9a;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+/* スマホ対応 */
+@media (max-width: 600px) {
+  .site-header__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .consider-article {
+    padding: 16px 14px 20px;
+  }
+
+  .consider-article h1 {
+    font-size: 18px;
+  }
+}
+
+
+/* 歌詞の行だけ色と枠を付ける */
+.memo-text .lyric-line {
+  display: block;
+  margin: 0.3rem -0.3rem;
+  padding: 0.25rem 0.7rem;
+  background: rgba(255, 182, 193, 0.18);
+  border-left: 3px solid #ff8fb3;
+  border-radius: 4px;
+}
+
+/* 考察の最初のかたまり（イントロ） */
+.memo-text .intro-block {
+  display: block;
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  background: rgba(135, 206, 250, 0.12);  /* うすい水色っぽい背景 */
+  border-left: 4px solid #87cefa;
+}
+
+/* 考察の最後のかたまり（まとめ） */
+.memo-text .summary-block {
+  display: block;
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  background: rgba(186, 85, 211, 0.12);  /* うすい紫っぽい背景 */
+  border-left: 4px solid #ba55d3;
+}
